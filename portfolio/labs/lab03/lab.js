@@ -1,35 +1,37 @@
-/*
-	https://www.html5rocks.com/en/tutorials/file/dndfiles/
-*/
-var output =[];
-for(var i=0,f;f=files[i];i++){
-    output.push('<li><strong>',escape(f.name),'</strong>(',f.type || 'n/a',')-',
-                f.size,'bytes, last modified:',
-                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString():'n/a',
-                '</li>');
-}
-document.getElementById('list').innerHTML='<ul>'+output.join('')+'</ul>';
+function readFiles(files){
+    /*
+    	https://www.html5rocks.com/en/tutorials/file/dndfiles/
+    */
+    var output =[];
+    for(var i=0,f;f=files[i];i++){
+        output.push('<li><strong>',escape(f.name),'</strong>(',f.type || 'n/a',')-',
+                    f.size,'bytes, last modified:',
+                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString():'n/a',
+                    '</li>');
+    }
+    document.getElementById('list').innerHTML='<ul>'+output.join('')+'</ul>';
 
 
-document.getElementById('contect').innerHTML='';
-document.getElementById('svgimage').innerHTML='';
+    document.getElementById('content').innerHTML='';
+    document.getElementById('svgimage').innerHTML='';
 
-for(var i=0,f;f=files[i];i++){
-    var reader=new Filereader();
-    reader.readAsText(files[i],'UTF-8');
+    for(var i=0,f;f=files[i];i++){
+        var reader=new FileReader();
+        reader.readAsText(files[i],'UTF-8');
 
-    reader.onload=function(evt){
-        var span=document.createElement('span');
-        span.setAttribute("class","svgshow");
-        span.innerHTML=evt.target.reasult;
-        document.getElementById('svgimage').insertBefore(span,null);
+        reader.onload=function(evt){
+            var span=document.createElement('span');
+            span.setAttribute("class","svgshow");
+            span.innerHTML=evt.target.result;
+            document.getElementById('svgimage').insertBefore(span,null);
 
-        var span=document.createElement('span');
-        span.textContent=evt.target.reasult;
-        document.getElementById('content').insertBefore(span,null);
+            var span=document.createElement('span');
+            span.setAttribute("class","svgtext");
+            span.textContent=evt.target.result;
+            document.getElementById('content').insertBefore(span,null);
+        }
     }
 }
-
 function handleFileSelect(evt){
     var files=evt.target.files;
 
